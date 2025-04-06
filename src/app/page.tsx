@@ -14,7 +14,7 @@ export default function Home() {
                         <div className="flex items-center justify-between w-full mb-[20px]">
                             <div className="flex items-center gap-3">
                                 <Image src={avatar} alt="" />
-                                <div>janedoe</div>
+                                <span>janedoe</span>
                             </div>
 
                             <div className="flex items-center gap-[3px]">
@@ -23,19 +23,19 @@ export default function Home() {
                                 <Image src={star} alt="" />
                                 <Image src={star} alt="" />
                                 <Image src={starNotFilled} alt="" />
-                                <div className="ml-2 text-[11px] text-[#7C7C7C]">(4)</div>
+                                <div className="ml-2 text-[11px] text-[#7C7C7C]">(5)</div>
                             </div>
                         </div>
 
                         <div className="px-[23px]">
                             <Image src={dubaiChoko} alt="" />
-                            <div className="text-[27px] font-bold mt-4">Double cheese burger</div>
-                            <p className="text-[23px] my-5">Grill two beef patties and melt a slice of cheese...</p>
-                            <div className="text-[20px] text-black/66">Shared on March 15, 2025</div>
+                            <h2 className="text-[27px] font-bold mt-4">Double cheese burger</h2>
+                            <p className="text-[23px] my-[18px] font-medium">Grill two beef patties and melt a slice of cheese...</p>
+                            <div className="text-[20px] text-black/66 font-medium">Shared on March 15, 2025</div>
                         </div>
                     </div>
 
-                    
+
                     <div className="bg-white py-[10px] px-[22px]">
                         <div className="flex items-center justify-between w-full mb-[20px]">
                             <div className="flex items-center gap-3">
@@ -55,14 +55,14 @@ export default function Home() {
 
                         <div className="px-[23px]">
                             <Image src={dubaiChoko} alt="" />
-                            <div className="text-[27px] font-bold mt-4">Double cheese burger</div>
-                            <p className="text-[23px] my-5">Grill two beef patties and melt a slice of cheese...</p>
-                            <div className="text-[20px] text-black/66">Shared on March 15, 2025</div>
+                            <h2 className="text-[27px] font-bold mt-4">Double cheese burger</h2>
+                            <p className="text-[23px] my-[18px] font-medium">Grill two beef patties and melt a slice of cheese...</p>
+                            <div className="text-[20px] text-black/66 font-medium">Shared on March 15, 2025</div>
                         </div>
                     </div>
                 </div>
                 <div className="bg-[#FCE2CE] pt-[132px] pl-8 rounded-t-[394px]">
-                    <Image src={povar} alt="" height={800} width={519}/>
+                    <Image src={povar} alt="" height={800} width={519} />
                 </div>
             </div>
         </section >

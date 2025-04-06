@@ -7,7 +7,7 @@ import viewOff from "../../../public/viewOffSlash.svg"
 
 export default function SingUp() {
     return (
-        <section className="flex items-start justify-between gap-[150px] container">
+        <section className="flex items-center justify-between  container">
             <div className="bg-[#FCE2CE] pt-[132px] pl-8 rounded-t-[394px]">
                 <Image src={povar} alt="" height={800} width={519} />
             </div>
@@ -46,9 +46,9 @@ export default function SingUp() {
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-8 items-center">
-                    <button type="submit" className="text-[#92613A] mt-[50px] bg-[#FCE2CE] rounded-[128px] text-2xl font-semibold py-5 w-full">Create Account</button>
-                    <span className="text-black/50">- or -</span>
+                <div className="flex flex-col  items-center">
+                    <button type="submit" className="form-button w-full">Create Account</button>
+                    <span className="text-black/50 mb-8">- or -</span>
                     <div className="flex items-center text-[18px] text-black/50">
                         Already have an account?
                         <a href="#" className="font-semibold text-[#C3824E] block ml-1">Sign in</a>

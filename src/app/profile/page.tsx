@@ -10,14 +10,14 @@ export default function Profile() {
         <section>
             <div className="container flex items-end justify-between gap-[164px] w-full">
                 <div className="bg-[#FCE2CE] py-10 px-[60px] rounded-[10px]">
-                    <h1 className="text-center">My Profile</h1>
-                    <div className="w-[513px] bg-white px-[28px] pb-4 pt-11 mt-10 mb-12">
+                    <h1 className="text-center font-medium text-[47px]">My Profile</h1>
+                    <div className="w-[513px] bg-white px-[28px] pb-5 pt-11 mt-10 mb-12 rounded-[10px]">
                         <div className="flex items-start gap-10">
                             <Image src={avatar} alt="" height={100} width={100} />
                             <div>
                                 <div className="text-[25px] font-bold">janedoe</div>
                                 <div className="mt-3 mb-5 text-black/70 text-[20px]">janedoe@gmail.com</div>
-                                <div className="text-black/70 text-[20px]">🗓️ Joined Mar 2025</div>
+                                <div className="text-black/70 text-[20px]">🗓️ Joined Mart 2025</div>
                             </div>
                         </div>
                     </div>
@@ -30,7 +30,7 @@ export default function Profile() {
                     <div className="mt-7">
                         <div className="flex items-center justify-between w-full">
                             <h2>My Receipts</h2>
-                            <div className="text-[20px] text-black/70">3 receipts</div>
+                            <div className="text-[27px] text-black/70 font-medium">3 receipts</div>
                         </div>
 
                         <div className="max-h-[430px] overflow-y-auto mt-9 flex flex-col  gap-7">
