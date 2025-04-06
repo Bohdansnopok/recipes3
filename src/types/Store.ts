@@ -4,6 +4,7 @@ export type AuthStoreProps = {
     error: null | string;
     isLoading: boolean;
     isVerified: boolean;
+    checkCookies: () => void;
     signUp: (data: SignUpProps) => Promise<void>;
     signIn:(data:SignInProps) => Promise<void>
   };
