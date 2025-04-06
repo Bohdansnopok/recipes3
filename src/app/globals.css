@@ -1,14 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  /* --background: #ffffff; */
   --foreground: #171717;
+  --font-family: var(--font-geist-andada-pro);
+  --activeColor: #92613a ;
+  --buttonBg: #FCE2CE;
+}
+
+html,
+body {
+  font-family: var(--font-family);
 }
 
 .container {
   width: 100%;
   max-width: 1366px;
-  margin: 0 auto; 
+  margin: 0 auto;
 }
 
 h1 {
@@ -19,4 +27,14 @@ h1 {
 h2 {
   font-size: 35px;
   font-weight: bold;
+}
+
+.form-button {
+  color: var(--activeColor);
+  margin: 80px 0  32px 0;
+  background-color: var(--buttonBg);
+  border-radius: 128px;
+  font-size: 24px;
+  font-weight: 600;
+  padding: 20px 0;
 }

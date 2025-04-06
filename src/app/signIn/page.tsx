@@ -1,13 +1,20 @@
+// "use client"
 import Image from "next/image";
 import povar from "../../../public/povar.png"
 import mailIcon from "../../../public/mailIcon.svg"
-import phone from "../../../public/smartPhoneIcon.svg"
 import passwordLock from "../../../public/lockPasswordIcon.svg"
 import viewOff from "../../../public/viewOffSlash.svg"
+// import { useState } from "react";
 
 export default function SingIn() {
+    // const [hidShowPassword, setHideShowPassword] = useState<boolean>(true);
+
+    // const ShowPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
+    //     e.preventDefault();
+    //     setHideShowPassword(!hidShowPassword);
+    // }
     return (
-        <section className="flex items-start justify-between gap-[150px] container">
+        <section className="flex items-center justify-between gap-[150px] container ">
             <form className="w-[540px]">
                 <h1 className="text-[#424242] mb-16 text-center">Welcome Back!!</h1>
                 <div className="flex flex-col gap-12">
@@ -27,7 +34,8 @@ export default function SingIn() {
                             className="rounded-[64px] border border-[#757575] py-5 px-[76px] block
                             w-full placeholder:text-[22px] placeholder:text-[#616161] text-[22px]"
                         />
-                        <button>
+                        {/* <button type="button" onClick={ShowPassword}> */}
+                        <button type="button">
                             <Image src={viewOff} alt="" className="absolute block top-6 right-[30px]" />
                         </button>
                     </div>
@@ -37,9 +45,9 @@ export default function SingIn() {
                     Forgot Password?
                 </div>
 
-                <div className="flex flex-col gap-8 items-center">
-                    <button type="submit" className="text-[#92613A] mt-[50px] bg-[#FCE2CE] rounded-[128px] text-2xl font-semibold py-5 w-full">Login</button>
-                    <span className="text-black/50">- or -</span>
+                <div className="flex flex-col  items-center">
+                    <button type="submit" className="form-button w-full">Login</button>
+                    <span className="text-black/50 mb-8">- or -</span>
                     <div className="flex items-center text-[18px] text-black/50">
                         Already have an account?
                         <a href="#" className="font-semibold text-[#C3824E] block ml-1">Sign up</a>
