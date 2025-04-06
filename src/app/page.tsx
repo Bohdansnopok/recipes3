@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import povar from "../../public/povar.png"
 import dubaiChoko from "../../public/dubaiChocoSmall.jpg"
