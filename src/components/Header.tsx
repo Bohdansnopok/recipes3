@@ -15,10 +15,6 @@ export default function Header() {
                     <CustomNavLink href="/create">Create Receipt</CustomNavLink>
                     <CustomNavLink href="/profile">My Profile</CustomNavLink>
                 </div>
-                <div className="flex items-center gap-12">
-                    <CustomNavLink href="/signIn">Login</CustomNavLink>
-                    <CustomNavLink href="/signUp">Sign up</CustomNavLink>
-                </div>
             </div>
         </header>
     );

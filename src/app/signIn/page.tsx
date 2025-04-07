@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { useAuthStore } from "@/store/AuthStore";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
 
 type SignInProps = {
     email: string;
@@ -28,7 +29,6 @@ export default function SingIn() {
         mutationFn: signIn,
         onSuccess: () => {
             alert(`Logged in successfully`);
-            router.push("/")
             
             queryClient.invalidateQueries({ queryKey: ['login'] });
         },
@@ -40,6 +40,7 @@ export default function SingIn() {
 
     const SignIn = (data: { email: string; password: string }) => {
         mutation.mutate(data)
+        router.push("/")
     }
 
 
@@ -85,7 +86,7 @@ export default function SingIn() {
                     <span className="text-black/50 mb-8">- or -</span>
                     <div className="flex items-center text-[18px] text-black/50">
                         Already have an account?
-                        <a href="#" className="font-semibold text-[#C3824E] block ml-1">Sign up</a>
+                        <Link href="/signUp" className="font-semibold text-[#C3824E] block ml-1">Sign up</Link>
                     </div>
                 </div>
             </form>
