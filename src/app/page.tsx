@@ -6,9 +6,15 @@ import starNotFilled from "../../public/starNotFilled.svg"
 import star from "../../public/Star.svg"
 import { useQuery } from '@tanstack/react-query'
 import { useAuthStore } from "@/store/AuthStore";
+import { useEffect } from "react";
 
 export default function Home() {
+    // const {user, token, checkAuth} = useAuthStore();
     // const { getRecipes } = useAuthStore();
+
+    // useEffect(()=>{
+    //     checkAuth();
+    // }, []);
 
     // const { isPending, isError, data, error } = useQuery({
     //     queryKey: ['recipes'],

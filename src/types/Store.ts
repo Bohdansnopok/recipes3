@@ -14,7 +14,10 @@ export type AuthStoreProps = {
     createdAt: Date;
     updatedAt: Date;
     // checkCookies: () => void;
-    signUp: (data: SignUpProps) => Promise<void>;
+    checkAuth: () => void;
+    // signUp: (data: SignUpProps) => Promise<void>;
+    signUp: (username: string, email: string, password: string) => Promise<{ success: boolean }>;
+
     signIn:(data:SignInProps) => Promise<void>;
     getRecipes: () => Promise<Recipe[]>;
   };
