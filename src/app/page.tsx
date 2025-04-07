@@ -5,12 +5,15 @@ import dubaiChoko from "../../public/dubaiChocoSmall.jpg"
 import avatar from "../../public/blackAvatar.svg"
 import starNotFilled from "../../public/starNotFilled.svg"
 import star from "../../public/Star.svg"
+import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 export default function Home() {
+
     return (
         <section>
             <div className="container flex items-end justify-between gap-[164px] w-full">
-                <div className="bg-[#FCE2CE] py-10 px-[60px] rounded-[10px] max-h-screen overflow-y-auto">
+                <div className="flex flex-col gap-6 bg-[#FCE2CE] py-10 px-[60px] rounded-[10px] max-h-screen overflow-y-auto">
                     <div className="bg-white py-[10px] px-[22px]">
                         <div className="flex items-center justify-between w-full mb-[20px]">
                             <div className="flex items-center gap-3">
@@ -37,7 +40,7 @@ export default function Home() {
                     </div>
 
 
-                    <div className="bg-white py-[10px] px-[22px]">
+                    {/* <div className="bg-white py-[10px] px-[22px]">
                         <div className="flex items-center justify-between w-full mb-[20px]">
                             <div className="flex items-center gap-3">
                                 <Image src={avatar} alt="" />
@@ -60,7 +63,7 @@ export default function Home() {
                             <p className="text-[23px] my-[18px] font-medium">Grill two beef patties and melt a slice of cheese...</p>
                             <div className="text-[20px] text-black/66 font-medium">Shared on March 15, 2025</div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="bg-[#FCE2CE] pt-[132px] pl-8 rounded-t-[394px]">
                     <Image src={povar} alt="" height={800} width={519} />
