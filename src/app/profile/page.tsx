@@ -1,11 +1,18 @@
+"use client"
 import Image from "next/image";
 import povar from "../../../public/povar.png"
 import dubaiChoko from "../../../public/dubaiChocoSmall.jpg"
 import avatar from "../../../public/blackAvatar.svg"
 import logout from "../../../public/logout.svg"
 import deleteIcon from "../../../public/delete.svg"
+import { useEffect } from "react";
+import { useAuthStore } from "@/store/AuthStore";
 
 export default function Profile() {
+    const {user, token, checkAuth, logout} = useAuthStore();
+    useEffect(()=>{
+        checkAuth();
+    }, []);
     return (
         <section>
             <div className="container flex items-end justify-between gap-[164px] w-full">
@@ -15,14 +22,16 @@ export default function Profile() {
                         <div className="flex items-start gap-10">
                             <Image src={avatar} alt="" height={100} width={100} />
                             <div>
-                                <div className="text-[25px] font-bold">janedoe</div>
-                                <div className="mt-3 mb-5 text-black/70 text-[20px]">janedoe@gmail.com</div>
-                                <div className="text-black/70 text-[20px]">🗓️ Joined Mart 2025</div>
+                                <div className="text-[25px] font-bold">{user?.username}</div>
+                                <div className="mt-3 mb-5 text-black/70 text-[20px]">{user?.email}</div>
+                                <div className="text-black/70 text-[20px]">🗓️ Joined Mart 2025
+                                {token}
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <button className="flex items-center justify-center gap-2 text-[25px] font-bold py-[10px] w-full bg-[#EF8C6D] rounded-[10px]">
+                    <button onClick={logout} className="flex items-center justify-center gap-2 text-[25px] font-bold py-[10px] w-full bg-[#EF8C6D] rounded-[10px]">
                         <Image src={logout} alt="" />
                         Logout
                     </button>
