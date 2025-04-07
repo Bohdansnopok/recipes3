@@ -3,7 +3,7 @@ import { Geist, Geist_Mono, Andada_Pro } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import { QueryProvider } from "@/provider/QueryProvider";
-import CheckAuth from "@/components/CheckAuth";
+// import CheckAuth from "@/components/CheckAuth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,10 +38,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${geistAndadaPro.variable} antialiased`}
       >
         <QueryProvider>
-          <CheckAuth>
+          {/* <CheckAuth> */}
             <Header />
             {children}
-          </CheckAuth>
+          {/* </CheckAuth> */}
         </QueryProvider>
       </body>
     </html>
