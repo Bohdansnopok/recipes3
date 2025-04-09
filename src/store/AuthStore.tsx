@@ -24,7 +24,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
   user: JSON.parse(localStorage.getItem('user') || 'null'),
   token: localStorage.getItem('token'),
   isLoading: false,
-
+  
+  
+  
   signUp: async ({ username, email, password }) => {
     set({ isLoading: true });
     try {
@@ -136,7 +138,7 @@ logout: async() =>{
   // signUp: async ({ username, email, password }: SignUpProps) => {
   //     set({ isLoading: true });
   //     try {
-  //         const response = await axios.post(`${BACKEND_API}/api/auth/register`, { username, email, password });
+  //         const response = await axios.post(${BACKEND_API}/api/auth/register, { username, email, password });
   //         console.log('Response from server:', response); 
   //         set({ user: response.data.user, isLoading: false, isAuthenticated: true });
 
@@ -157,7 +159,7 @@ logout: async() =>{
   // signIn: async ({ email, password }: SignInProps) => {
   //     set({ isLoading: true });
   //     try {
-  //         const response = await axios.post(`${BACKEND_API}/api/auth/login`, { email, password });
+  //         const response = await axios.post(${BACKEND_API}/api/auth/login, { email, password });
   //         console.log('Response from server:', response); // Логуємо всю відповідь сервера
   //         set({ user: response.data.user, isLoading: false, isVerified: true });
 
@@ -189,9 +191,9 @@ logout: async() =>{
   //     const token = userCockies;
 
   //     // Делаем запрос с токеном в заголовке Authorization
-  //     const response = await axios.get(`${BACKEND_API}/api/recipes`, {
+  //     const response = await axios.get(${BACKEND_API}/api/recipes, {
   //       headers: {
-  //         Authorization: `Bearer ${token}`
+  //         Authorization: Bearer ${token}
   //       },
   //       withCredentials: true
   //     });
