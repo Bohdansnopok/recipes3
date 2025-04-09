@@ -1,11 +1,20 @@
-import { useQuery } from "@tanstack/react-query";
-import { getRecipes } from "../api/getRecipes";
+// hooks/useRecipes.ts
+import { useQuery } from '@tanstack/react-query';
+
+const fetchRecipes = async () => {
+  const res = await fetch("https://recipe-yt.onrender.com/api/recipes");
+
+  if (!res.ok) throw new Error('Failed to fetch recipes');
+
+  const data = await res.json();
+  return data.recipes;
+};
 
 export const useRecipes = () => {
   return useQuery({
-    queryKey: ["recipes"],
-    queryFn: getRecipes,
+    queryKey: ['recipes'],
+    queryFn: fetchRecipes,
     retry: false,
-    staleTime: 1000 * 60 * 5,
+    refetchInterval: 300000,  
   });
 };

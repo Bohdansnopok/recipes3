@@ -9,12 +9,7 @@ import { useAuthStore } from "@/store/AuthStore";
 import { useEffect } from "react";
 
 export default function Home() {
-    const {user, token, checkAuth} = useAuthStore();
     const { getRecipes } = useAuthStore();
-
-    useEffect(()=>{
-        checkAuth();
-    }, []);
 
     const { isPending, isError, data, error } = useQuery({
         queryKey: ['recipes'],
@@ -34,7 +29,7 @@ export default function Home() {
             <div className="container flex items-end justify-between gap-[164px] w-full">
                 <div className="bg-[#FCE2CE] py-10 px-[60px] rounded-[10px] max-h-screen overflow-y-auto">
                     {data.length > 0 ? (
-                        data.map((recipe) => (
+                        data.map((recipe: any) => (
                             <div key={recipe._id} className="bg-white py-[10px] px-[22px] mb-6">
                                 <div className="flex items-center justify-between w-full mb-[20px]">
                                     <div className="flex items-center gap-3">
@@ -51,7 +46,7 @@ export default function Home() {
                                     </div>
                                 </div>
                                 <div className="px-[23px]">
-                                    <Image src={dubaiChoko} alt="" />
+                                    <Image src={recipe.image} alt="" />
                                     <h2 className="text-[27px] font-bold mt-4">{recipe.title}</h2>
                                     <p className="text-[23px] my-[18px] font-medium">{recipe.caption}.</p>
                                     <div className="text-[20px] text-black/66 font-medium">
