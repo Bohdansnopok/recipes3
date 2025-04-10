@@ -4,8 +4,8 @@
   /* --background: #ffffff; */
   --foreground: #171717;
   --font-family: var(--font-geist-andada-pro);
-  --activeColor: #92613a ;
-  --buttonBg: #FCE2CE;
+  --activeColor: #92613a;
+  --buttonBg: #fce2ce;
 }
 
 html,
@@ -31,7 +31,7 @@ h2 {
 
 .form-button {
   color: var(--activeColor);
-  margin: 80px 0  32px 0;
+  margin: 80px 0 32px 0;
   background-color: var(--buttonBg);
   border-radius: 128px;
   font-size: 24px;
@@ -60,4 +60,44 @@ h2 {
 
 .boxShadowModal {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.starInput {
+  display: none;
+}
+
+.starLabel {
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  margin: 5px;
+  background: gray;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.starLabel.active {
+  background: yellow;
+}
+
+.starLabel::before {
+  content: "";
+  background: yellow;
+  width: 35px;
+  height: 35px;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  align-self: center;
+}
+
+/* .starInput:not(:checked) > .starLabel:hover,
+.starInput:not(:checked) > .starLabel:hover, ~ label {
+  background-color: lightgreen !important;
+} */
+
+.starInput:checked + label:hover,
+.starLabel:hover ~ input:checked ~ label,
+.starInput:checked ~ label:hover ~ label {
+  background-color: lightgreen !important;
+  cursor: pointer;
 }
