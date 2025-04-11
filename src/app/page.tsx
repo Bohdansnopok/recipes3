@@ -24,6 +24,7 @@ export default function Home() {
     }
 
     const recipes = data?.recipes || [];
+
     return (
         <>
             <div className="container flex items-end justify-between w-full">
@@ -34,7 +35,7 @@ export default function Home() {
                                 <div className="flex items-center justify-between w-full mb-[20px]">
                                     <div className="flex items-center gap-3">
                                         <Image
-                                            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Bobby"
+                                            src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${recipe.user.profileImage}`}
                                             alt="User avatar"
                                             width={30}
                                             height={20}

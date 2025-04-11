@@ -12,7 +12,7 @@ import { Recipe } from "@/types/Store";
 import Link from "next/link";
 
 export default function Profile() {
-    const { getRecipesByCurrentuser, logout } = useAuthStore();
+    const { user, getRecipesByCurrentuser, logout } = useAuthStore();
 
     const { isPending, isError, data, error } = useQuery({
         queryKey: ['recipes'],
@@ -31,8 +31,8 @@ export default function Profile() {
 
 
     const userFirstSignUp = localStorage.getItem("userFirstSignUp");
-    const userName =localStorage.getItem("userName");
-    const userEmail =localStorage.getItem("userEmail")
+    const userName = localStorage.getItem("userName");
+    const userEmail = localStorage.getItem("userEmail")
 
     return (
         <section>
@@ -41,8 +41,13 @@ export default function Profile() {
                     <h1 className="text-center font-medium text-[47px]">My Profile</h1>
                     <div className="w-[513px] bg-white px-[28px] pb-5 pt-11 mt-10 mb-12 rounded-[10px]">
                         <div className="flex items-start gap-10">
-                            <Image src={avatar} alt="User profile avatar" height={100} width={100} />
-                            <div>
+                            <Image
+                                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${userName}`}
+                                alt="User avatar"
+                                width={113}
+                                height={113}
+                                unoptimized
+                            />                            <div>
                                 <div className="text-[25px] font-bold">{userName}</div>
                                 <div className="mt-3 mb-5 text-black/70 text-[20px]">{userEmail}</div>
                                 <div className="text-black/70 text-[20px]">{userFirstSignUp}</div>
@@ -86,11 +91,11 @@ export default function Profile() {
                                         </div>
                                     </div>
                                 ))
-                            ):(
+                            ) : (
                                 <Link href='/create' className="text-center  text-base font-bold">You have not any recipe. You may create recipe if you click here</Link>
                             )}
 
-{/* 
+                            {/* 
                             // <div className="bg-white max-w-[450px] p-4 rounded-[10px]">
                             //     <div className="flex items-center gap-[10px]">
                             //         <Image src={dubaiChoko} alt="" height={133} width={237} />
