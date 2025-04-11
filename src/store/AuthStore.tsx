@@ -31,7 +31,7 @@ export type SignInProps = {
 // };
 
 export type Recipe = {
-  _id: string; // или number, если ты уверен — но сейчас у тебя строка
+  _id: number; // или number, если ты уверен — но сейчас у тебя строка
   title: string;
   caption: string;
   image: string;

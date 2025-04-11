@@ -1,9 +1,6 @@
 export const addRecipe = async (formData: FormData, token: string) => {
   try {
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ': ' + pair[1]);
-    }
-
+    
     const res = await fetch('https://recipe-yt.onrender.com/api/recipes', {
       method: 'POST',
       headers: {

@@ -3,55 +3,118 @@
 import Image from "next/image";
 import povar from "../../../public/povar.png"
 import whiskAndBowl from "../../../public/whisk-and-bowl.svg"
-import star from "../../../public/Star.svg"
-import starNotFilled from "../../../public/starNotFilled.svg"
+// import star from "../../../public/Star.svg"
+// import starNotFilled from "../../../public/starNotFilled.svg"
 import picture from "../../../public/pictureIcon.svg"
 import { useForm } from "react-hook-form";
-import { addRecipe } from '../../utils/addRecipe';
-import { useState } from "react";
+// import { addRecipe } from '../../utils/addRecipe';
+import React, { useState } from "react";
+import { toast } from "react-toastify";
+import axios, { AxiosError } from "axios";
+
+type CreateRecipe = {
+    title: string;
+    caption: string;
+    rating: number;
+    image?: string | null;
+}
 
 export default function Create() {
+    const { register, formState: { errors, isValid }, handleSubmit, reset } = useForm<CreateRecipe>();
+    const [image, setImage] = useState<File | null>(null);
     const [rating, setRating] = useState<number>(0);
+    const [data, setData] = useState<CreateRecipe>({
+        title: "",
+        caption: "",
+        rating: 0,
+    })
 
-    const handleRatingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setRating(Number(e.target.value));
-    };
+    // const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const { title, value } = e.target;
 
-    const {
-        register,
-        formState: {
-            errors,
-            isValid
-        },
-        handleSubmit,
-        reset,
-    } = useForm({
-        mode: "onBlur"
-    });
+    //     if (title === "title") {
+    //         setData((prevData) => ({
+    //             ...prevData,
+    //         }));
+    //     } else {
+    //         setData((prevData) => ({ ...prevData, [title]: value }));
+    //     }
+    // };
 
-    const onSubmit = async (data: any) => {
-        try {
-            const formData = new FormData();
+    // const handleRatingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     setRating(Number(e.target.value));
+    // };
 
-            // Додаємо інші дані
-            formData.append('title', data.title);
-            formData.append('caption', data.caption);
-            formData.append('image', data.Image[0]);
-            formData.append('rating', String(rating));
 
-            const token = localStorage.getItem('token') || '';
-            console.log('hello world')
-            const result = await addRecipe(formData, token);
-            console.log('Рецепт успішно додано:', result);
 
-            reset();
-        } catch (error) {
-            console.error('Помилка при надсиланні рецепта:', error);
-            if (error instanceof Error) {
-                alert(`Error: ${error.message}`);
+
+    const onSubmit = async (formData: CreateRecipe) => {
+
+        if (!formData.title || !formData.caption || rating === 0) {
+            toast.error("Please fill in all fields!");
+            return;
+        }
+
+        const token = localStorage.getItem("token");
+        if (!token) {
+            toast.error("No token found! You need to be logged in.");
+            return;
+        }
+
+
+        const sendPayload = async (payload: CreateRecipe) => {
+            try {
+                const response = await axios.post("https://recipe-yt.onrender.com/api/recipes", payload, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+                console.log("Data sent successfully:", response.data);
+                if (response.status === 201) {
+                    // Сброс формы и состояний после успешной отправки
+                    setImage(null);
+                    setRating(0);
+                    reset();
+                    toast.success("You add your Recipe, please wait");
+                }
+            } catch (e: unknown) {
+                if (e instanceof AxiosError) {
+                    console.error("Error sending data:", e.response ? e.response.data : e.message);
+                } else {
+                    console.error("Unknown error:", e);
+                }
+                toast.error("There was an error sending your data.");
             }
+        };
+
+        // Обрабатываем изображение, если оно выбрано
+        if (image) {
+            const reader = new FileReader();
+            reader.readAsDataURL(image);
+            reader.onloadend = async () => {
+                const base64Image = reader.result as string;
+                const payload: CreateRecipe = {
+                    title: formData.title,
+                    caption: formData.caption,
+                    rating: rating, // используем значение рейтинга из состояния
+                    image: base64Image,
+                };
+                console.log("Payload:", payload);
+                await sendPayload(payload);
+            };
+        } else {
+            const payload: CreateRecipe = {
+                title: formData.title,
+                caption: formData.caption,
+                rating: rating,
+                image: null,
+            };
+            console.log("Payload:", payload);
+            await sendPayload(payload);
         }
     };
+
 
     return (
         <section>
@@ -78,21 +141,25 @@ export default function Create() {
                         <div className="relative">
                             <label className="text-[27px] text-black/70 block mt-7">Your Rating</label>
                             <fieldset className="w-full flex items-center justify-between border border-green-700 rounded-[10px] mt-4 py-4 px-[40px]">
-                                <input type="radio" id="star1" name="rating" value="rating" className="starInput" onChange={() => setRating(1)} checked={rating === 1} />
-                                <label htmlFor="star1" className={`starLabel ${rating >= 1 ? 'active' : ''}`}></label>
-
-                                <input type="radio" id="star2" name="rating" value="rating" className="starInput" onChange={() => setRating(2)} checked={rating === 2} />
-                                <label htmlFor="star2" className={`starLabel ${rating >= 2 ? 'active' : ''}`}></label>
-
-                                <input type="radio" id="star3" name="rating" value="rating" className="starInput" onChange={() => setRating(3)} checked={rating === 3} />
-                                <label htmlFor="star3" className={`starLabel ${rating >= 3 ? 'active' : ''}`}></label>
-
-                                <input type="radio" id="star4" name="rating" value="rating" className="starInput" onChange={() => setRating(4)} checked={rating === 4} />
-                                <label htmlFor="star4" className={`starLabel ${rating >= 4 ? 'active' : ''}`}></label>
-
-                                <input type="radio" id="star5" name="rating" value="rating" className="starInput" onChange={() => setRating(5)} checked={rating === 5} />
-                                <label htmlFor="star5" className={`starLabel ${rating >= 5 ? 'active' : ''}`}></label>
+                                {[1, 2, 3, 4, 5].map((num) => (
+                                    <React.Fragment key={num}>
+                                        <input
+                                            type="radio"
+                                            id={`star${num}`}
+                                            name="rating"
+                                            value={num}
+                                            onChange={() => setRating(num)}
+                                            checked={rating === num}
+                                            className="starInput hidden"
+                                        />
+                                        <label
+                                            htmlFor={`star${num}`}
+                                            className={`starLabel ${rating >= num ? "active" : ""}`}
+                                        ></label>
+                                    </React.Fragment>
+                                ))}
                             </fieldset>
+
                         </div>
 
                         <div className="relative">
@@ -111,28 +178,49 @@ export default function Create() {
                             <div>{errors?.caption?.message}</div>
                         </div>
 
-                        {/* Інпут для вибору картинки */}
-                        <div>
-                            <div className="text-[27px] text-black/70 block mt-[34px]">Receipt Image</div>
-                            <label className="flex flex-col mt-6 items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 transition">
-                                <div className="flex flex-col items-center justify-center">
-                                    <Image src={picture} alt="" className="w-[54px] h-[54px] mb-4" />
-                                    <p className="text-[22px] font-medium text-gray-500">Tap to select image</p>
+                        <label
+                            htmlFor="image-upload"
+                            className="relative flex flex-col mt-6 items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 transition overflow-hidden"
+                        >
+                    
+                            <input
+                                id="image-upload"
+                                type="file"
+                                className="hidden"
+                                onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)}
+                            />
+
+                            
+                            {!image && (
+                                <div className="flex flex-col items-center justify-center z-10">
+                                    <Image
+                                        src={picture}
+                                        alt="select image icon"
+                                        className="w-[54px] h-[54px] mb-4"
+                                    />
+                                    <p className="text-[22px] font-medium text-gray-500">
+                                        Tap to select image
+                                    </p>
                                 </div>
-                                <input
-                                    {...register('Image', { required: "Будь ласка, виберіть зображення!" })}
-                                    type="file"
-                                    className="hidden"
+                            )}
+
+                     
+                            {image && (
+                                <Image
+                                    src={URL.createObjectURL(image)}
+                                    alt="uploaded-preview"
+                                    fill // <-- делает width+height = 100% и позиционирует absolutely
+                                    className="object-cover"
                                 />
-                            </label>
-                        </div>
+                            )}
+                        </label>
 
                         <div className="mt-1 text-red-500 text-[20px] font-bold">
                             <div>{errors?.Image?.message}</div>
                         </div>
 
                         <div className="flex justify-center w-full mt-6">
-                            <button type="submit" disabled={!isValid} className="border border-black rounded-[10px] cursor-pointer bg-[#EF8C6D] w-[316px] text-black/70 text-center text-[25px] font-bold">Create</button>
+                            <button type="submit" className="border border-black rounded-[10px] cursor-pointer bg-[#EF8C6D] w-[316px] text-black/70 text-center text-[25px] font-bold">Create</button>
                         </div>
                     </form>
                 </div>
