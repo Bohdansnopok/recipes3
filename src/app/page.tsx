@@ -1,12 +1,13 @@
 "use client"
 import Image from "next/image";
 import povar from "../../public/povar.png"
-import dubaiChoko from "../../public/dubaiChocoSmall.jpg"
+// import dubaiChoko from "../../public/dubaiChocoSmall.jpg"
 import starNotFilled from "../../public/starNotFilled.svg"
 import star from "../../public/Star.svg"
 import { useQuery } from '@tanstack/react-query'
-import { useAuthStore } from "@/store/AuthStore";
-import { useEffect } from "react";
+import { useAuthStore } from "@/store/authStore";
+// import { useEffect } from "react";
+import { Recipe } from "@/store/authStore";
 
 export default function Home() {
     const { getRecipes } = useAuthStore();
@@ -20,21 +21,30 @@ export default function Home() {
         return <span>Loading...</span>;
     }
 
-    if (isError) {
-        return <span>Error: {error.message}</span>;
+    if (isError || !data) {
+        return <span>Error: {error?.message || 'No data returned'}</span>;
     }
 
+    const recipes = data?.recipes || [];
     return (
-        <section>
-            <div className="container flex items-end justify-between gap-[164px] w-full">
-                <div className="bg-[#FCE2CE] py-10 px-[60px] rounded-[10px] max-h-screen overflow-y-auto">
-                    {data.length > 0 ? (
-                        data.map((recipe: any) => (
-                            <div key={recipe._id} className="bg-white py-[10px] px-[22px] mb-6">
+        <>
+            <div className="container flex items-end justify-between w-full">
+                <div className="bg-[#FCE2CE] py-10 px-[60px] rounded-[10px] max-h-screen overflow-y-auto w-[730px]">
+                    {recipes?.length > 0 ? (
+                        recipes?.map((recipe: Recipe) => (
+                            <div key={recipe?._id} className="bg-white py-[10px] px-[22px] mb-6">
                                 <div className="flex items-center justify-between w-full mb-[20px]">
                                     <div className="flex items-center gap-3">
-                                        <Image src={recipe.user.profileImage} alt="" width={40} height={40} />
-                                        <p>{recipe.user.username}</p>
+                                        <Image
+                                            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Bobby"
+                                            alt="User avatar"
+                                            width={30}
+                                            height={20}
+                                            unoptimized
+                                        />
+
+
+                                        <p>{recipe?.user?.username}</p>
                                     </div>
                                     <div className="flex items-center gap-[3px]">
                                         <Image src={star} alt="" />
@@ -46,11 +56,12 @@ export default function Home() {
                                     </div>
                                 </div>
                                 <div className="px-[23px]">
-                                    <Image src={recipe.image} alt="" />
-                                    <h2 className="text-[27px] font-bold mt-4">{recipe.title}</h2>
-                                    <p className="text-[23px] my-[18px] font-medium">{recipe.caption}.</p>
-                                    <div className="text-[20px] text-black/66 font-medium">
-                                        {new Date(recipe.createdAt).toLocaleDateString()}
+                                    <Image src={recipe?.image} alt="" width={521} height={292} />
+                                    <h2 className="text-[27px] font-bold mt-4 w-[] ">{recipe?.title}</h2>
+                                    <p className="max-w-[513px] whitespace-nowrap overflow-hidden text-ellipsis mt-[18px]">{recipe?.caption}.</p>
+
+                                    <div className="text-[20px] text-black/66 font-medium mt-5">
+                                        {new Date(recipe?.createdAt).toLocaleDateString()}
                                     </div>
                                 </div>
                             </div>
@@ -63,6 +74,6 @@ export default function Home() {
                     <Image src={povar} alt="" height={800} width={519} />
                 </div>
             </div>
-        </section>
+        </>
     );
 }

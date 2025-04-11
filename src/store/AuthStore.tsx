@@ -3,30 +3,53 @@ import { create } from 'zustand';
 type User = {
   username: string;
   email: string;
-  profileImage?:string;
-  createdAt?:string;
+  profileImage?: string;
+  createdAt?: string;
   _id?: string;
 };
 
-export type SignInProps={
+export type SignInProps = {
   email: string;
   password: string;
 }
 
 
-type Recipe = {
-  _id: number;
+// export type Recipe = {
+
+//   _id: number;
+//   title: string;
+//   caption: string;
+//   image: string;
+//   rating: number;
+//   user:{
+//     _id:number;
+//     username:string;
+//     profileImage:string
+//   }
+//   createdAt: Date;
+//   updatedAt: Date;
+// };
+
+export type Recipe = {
+  _id: string; // или number, если ты уверен — но сейчас у тебя строка
   title: string;
   caption: string;
   image: string;
   rating: number;
-  user:{
-    _id:number;
-    username:string;
-    profileImage:string
-  }
-  createdAt: Date;
-  updatedAt: Date;
+  user: {
+    _id: string;
+    username: string;
+    profileImage: string;
+  };
+  createdAt: string; // если ты не конвертируешь в объект Date
+  updatedAt: string;
+};
+
+export type RecipesResponse = {
+  recipes: Recipe[];
+  totalPages: number;
+  totalRecipes: number;
+  currentPage: number;
 };
 
 type AuthStore = {
@@ -141,36 +164,35 @@ export const useAuthStore = create<AuthStore>((set, get) => {
       set({ user: null });
     },
 
-    getRecipes: async () => {
+    getRecipes: async (): Promise<RecipesResponse | null> => {
       try {
         const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    
-        console.log("Token from localStorage:", token); // Логування отриманого токену
-    
+
         if (!token) {
           console.log("No token found in localStorage");
-          return []; 
+          return null;
         }
-    
+
         const res = await fetch("https://recipe-yt.onrender.com/api/recipes", {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${token}`, 
+            'Authorization': `Bearer ${token}`,
           },
         });
-    
+
         if (!res.ok) {
-          console.error("Error response:", res.statusText); 
-          return []; 
+          console.error("Error response:", res.statusText);
+          return null;
         }
-    
-        const data = await res.json();
-        console.log("Received data:", data); 
-        return data || []; 
+
+        const data: RecipesResponse = await res.json();
+        console.log("Received data:", data);
+        return data;
       } catch (err) {
-        console.error("Error fetching recipes:", err); 
-        return []; 
+        console.error("Error fetching recipes:", err);
+        return null;
       }
-    },    
+    }
+
   };
 });
