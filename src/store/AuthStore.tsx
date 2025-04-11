@@ -3,30 +3,53 @@ import { create } from 'zustand';
 type User = {
   username: string;
   email: string;
-  profileImage?:string;
-  createdAt?:string;
+  profileImage?: string;
+  createdAt?: string;
   _id?: string;
 };
 
-export type SignInProps={
+export type SignInProps = {
   email: string;
   password: string;
 }
 
 
-type Recipe = {
-  _id: number;
+// export type Recipe = {
+
+//   _id: number;
+//   title: string;
+//   caption: string;
+//   image: string;
+//   rating: number;
+//   user:{
+//     _id:number;
+//     username:string;
+//     profileImage:string
+//   }
+//   createdAt: Date;
+//   updatedAt: Date;
+// };
+
+export type Recipe = {
+  _id: number; // или number, если ты уверен — но сейчас у тебя строка
   title: string;
   caption: string;
   image: string;
   rating: number;
-  user:{
-    _id:number;
-    username:string;
-    profileImage:string
-  }
-  createdAt: Date;
-  updatedAt: Date;
+  user: {
+    _id: string;
+    username: string;
+    profileImage: string;
+  };
+  createdAt: string; // если ты не конвертируешь в объект Date
+  updatedAt: string;
+};
+
+export type RecipesResponse = {
+  recipes: Recipe[];
+  totalPages: number;
+  totalRecipes: number;
+  currentPage: number;
 };
 
 type AuthStore = {
@@ -37,15 +60,11 @@ type AuthStore = {
   signIn: (data: SignInProps) => Promise<{ success: boolean }>;
   signUp: (data: { username: string; email: string; password: string }) => Promise<{ success: boolean }>;
   getRecipes: () => Promise<Recipe[]>;
-
+  getRecipesByCurrentuser: ()=> Promise<Recipe[]>;
+  logout:()=> Promise<void>
 };
 
-export const useAuthStore = create<AuthStore>((set, get) => {
-  // const getToken = () => {
-  //   if (typeof window === 'undefined') return null;
-  //   return localStorage.getItem('token');
-  // };
-
+export const useAuthStore = create<AuthStore>((set) => {
   return {
     user: null,
     isLoading: false,
@@ -64,7 +83,13 @@ export const useAuthStore = create<AuthStore>((set, get) => {
         const { token, user } = await res.json();
 
         localStorage.setItem("token", token);
-        set({ user, isLoading: false });
+        localStorage.setItem("userName", username);
+        localStorage.setItem("userEmail", email);
+        if (user) {
+          const userFirstSignUp = new Date().toLocaleDateString("ru-RU");
+          localStorage.setItem("userFirstSignUp", userFirstSignUp)
+        }
+        set({ user: user, isLoading: false });
 
         return { success: true };
       } catch (error) {
@@ -88,7 +113,14 @@ export const useAuthStore = create<AuthStore>((set, get) => {
         const { token, user } = await res.json();
 
         localStorage.setItem("token", token);
-        set({ user, isLoading: false });
+        localStorage.setItem("userEmail", email);
+        set({ user: user, isLoading: false });
+
+
+        if (user) {
+          const userFirstSignUp = new Date().toLocaleDateString("ru-RU");
+          localStorage.setItem("userFirstSignUp", userFirstSignUp)
+        }
 
         return { success: true };
       } catch (error) {
@@ -125,52 +157,69 @@ export const useAuthStore = create<AuthStore>((set, get) => {
     },
 
     logout: async () => {
-      const token = getToken();
-      try {
-        await fetch("https://recipe-yt.onrender.com/api/auth/logout", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-      } catch (e) {
-        console.log("Logout failed:", e);
-      }
-
-      localStorage.removeItem("token");
+      localStorage.clear();
       set({ user: null });
     },
 
-    getRecipes: async () => {
+    getRecipes: async (): Promise<RecipesResponse | null> => {
       try {
         const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    
-        console.log("Token from localStorage:", token); // Логування отриманого токену
-    
+
         if (!token) {
           console.log("No token found in localStorage");
-          return []; 
+          return null;
         }
-    
+
         const res = await fetch("https://recipe-yt.onrender.com/api/recipes", {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${token}`, 
+            'Authorization': `Bearer ${token}`,
           },
         });
-    
+
         if (!res.ok) {
-          console.error("Error response:", res.statusText); 
-          return []; 
+          console.error("Error response:", res.statusText);
+          return null;
         }
-    
-        const data = await res.json();
-        console.log("Received data:", data); 
-        return data || []; 
+
+        const data: RecipesResponse = await res.json();
+        console.log("Received data:", data);
+        return data;
       } catch (err) {
-        console.error("Error fetching recipes:", err); 
-        return []; 
+        console.error("Error fetching recipes:", err);
+        return null;
       }
-    },    
+    },
+
+    getRecipesByCurrentuser: async (): Promise<RecipesResponse | null> => {
+      try {
+        const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+
+        if (!token) {
+          console.log("No token found in localStorage");
+          return null;
+        }
+
+        const res = await fetch("https://recipe-yt.onrender.com/api/recipes/user", {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          console.error("Error response:", res.statusText);
+          return null;
+        }
+
+        const data: RecipesResponse = await res.json();
+        console.log("Received data:", data);
+        return data;
+      } catch (err) {
+        console.error("Error fetching recipes:", err);
+        return null;
+      }
+    }
+
   };
 });

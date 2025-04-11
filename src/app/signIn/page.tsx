@@ -13,6 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, LoginSchemaType  } from '../../zodSchems/loginSchem';
 import { toast } from 'react-toastify';
 import { useAuthStore } from "@/store/authStore";
+import { toast } from "react-toastify";
 
 
 // type SignInProps = {
@@ -43,7 +44,7 @@ export default function SingIn() {
             queryClient.invalidateQueries({ queryKey: ['singIn'] });
         },
         onError: (error: Error) => {
-            alert(error.message);
+            toast.error(error.message);
         },
     })
 
