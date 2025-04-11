@@ -1,13 +1,11 @@
 "use client"
 import Image from "next/image";
 import povar from "../../public/povar.png"
-// import dubaiChoko from "../../public/dubaiChocoSmall.jpg"
 import starNotFilled from "../../public/starNotFilled.svg"
 import star from "../../public/Star.svg"
 import { useQuery } from '@tanstack/react-query'
-import { useAuthStore } from "@/store/authStore";
-// import { useEffect } from "react";
-import { Recipe } from "@/store/authStore";
+import { useAuthStore } from "@/store/AuthStore";
+import { Recipe } from "@/store/AuthStore";
 
 export default function Home() {
     const { getRecipes } = useAuthStore();

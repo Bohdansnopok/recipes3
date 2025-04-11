@@ -10,6 +10,7 @@ import { useAuthStore } from "@/store/AuthStore";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 type SignInProps = {
     email: string;
@@ -33,8 +34,7 @@ export default function SingIn() {
             queryClient.invalidateQueries({ queryKey: ['login'] });
         },
         onError: (error: Error) => {
-            alert(error.message);
-            // Handle error (show error message to the user)
+            toast.error(error.message);
         },
     })
 
