@@ -10,6 +10,8 @@ import { useAuthStore } from "@/store/AuthStore";
 import { useQuery } from "@tanstack/react-query";
 import { Recipe } from "@/types/Store";
 import Link from "next/link";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 export default function Profile() {
     const { user, getRecipesByCurrentuser, logout } = useAuthStore();
@@ -33,6 +35,30 @@ export default function Profile() {
     const userFirstSignUp = localStorage.getItem("userFirstSignUp");
     const userName = localStorage.getItem("userName");
     const userEmail = localStorage.getItem("userEmail")
+
+    const handleDelete = async (id: string) => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            toast.error("No token found! You need to be logged in.");
+            return;
+        }
+    
+        try {
+            const response = await axios.delete(`https://recipe-yt.onrender.com/api/recipes/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+    
+            if (response.status === 200) {
+                toast.success("Recipe deleted successfully!");
+                setRecipes((prevRecipes) => prevRecipes.filter(recipe => recipe.id !== id));
+            }
+        } catch (error) {
+            toast.error("Error deleting recipe");
+            console.error("Delete error:", error);
+        }
+    };
 
     return (
         <section>
@@ -87,7 +113,7 @@ export default function Profile() {
                                                     day: "numeric",
                                                 })
                                                 : "No date available"}</div>
-                                            <button><Image src={deleteIcon} alt="" /></button>
+                                            <button onClick={() => { console.log(recipe._id); handleDelete(recipe._id) }}><Image src={deleteIcon} alt="" /></button>
                                         </div>
                                     </div>
                                 ))
