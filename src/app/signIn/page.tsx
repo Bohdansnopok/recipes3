@@ -5,12 +5,10 @@ import mailIcon from "../../../public/mailIcon.svg"
 import passwordLock from "../../../public/lockPasswordIcon.svg"
 import viewOff from "../../../public/viewOffSlash.svg"
 // import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
-import { useAuthStore } from "@/store/AuthStore";
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { toast } from "react-toastify";
 
 type SignInProps = {
     email: string;
@@ -20,10 +18,17 @@ type SignInProps = {
 
 export default function SingIn() {
     const {signIn} = useAuthStore();
-    const { register, handleSubmit } = useForm<SignInProps>();
     const router = useRouter();
+    const {register, reset, control, formState: { errors }, handleSubmit } = useForm<LoginSchemaType>({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            variant: 'signIn',
+            email: '',
+            password: ''
+          },
+    });
 
-    
+
     const queryClient = useQueryClient();
 
     const mutation = useMutation({
@@ -31,18 +36,29 @@ export default function SingIn() {
         onSuccess: () => {
             alert(`Logged in successfully`);
             
-            queryClient.invalidateQueries({ queryKey: ['login'] });
+            queryClient.invalidateQueries({ queryKey: ['singIn'] });
         },
         onError: (error: Error) => {
-            toast.error(error.message);
+            alert(error.message);
+            // Handle error (show error message to the user)
         },
     })
 
-    const SignIn = (data: { email: string; password: string }) => {
-        mutation.mutate(data)
-        router.push("/")
+    const SignIn: SubmitHandler<LoginSchemaType> = async (data: { email: string; password: string }) => {
+        try {
+            const res = await signIn(data);
+        
+            if (res.success) {
+              toast.success("Успішний вхід!");
+              router.push("/");
+            } else {
+              toast.error("Щось пішло не так.");
+            }
+        
+          } catch (e) {
+            toast.error(e instanceof Error ? e.message : String(e));
+          }
     }
-
 
     return (
         <section className="flex items-center justify-between gap-[150px] container ">
