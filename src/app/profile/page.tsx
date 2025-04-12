@@ -37,6 +37,7 @@ export default function Profile() {
     const userEmail = localStorage.getItem("userEmail")
 
     const handleDelete = async (id: string) => {
+        
         const token = localStorage.getItem("token");
         if (!token) {
             toast.error("No token found! You need to be logged in.");
@@ -52,8 +53,11 @@ export default function Profile() {
     
             if (response.status === 200) {
                 toast.success("Recipe deleted successfully!");
-                setRecipes((prevRecipes) => prevRecipes.filter(recipe => recipe.id !== id));
+                setTimeout(() => {
+                    window.location.reload();
+                }, 10000); 
             }
+            
         } catch (error) {
             toast.error("Error deleting recipe");
             console.error("Delete error:", error);
