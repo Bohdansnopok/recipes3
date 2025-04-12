@@ -1,20 +1,18 @@
 "use client"
 
 import { useEffect } from "react";
-import { useAuthStore } from "@/store/AuthStore";
+import { UserStore } from "@/store/UserStore";
 import { useRouter } from "next/navigation";
 
 const CheckAuth = ({ children }: { children: React.ReactNode }) => {
-  const { token, user } = useAuthStore();
+  const { token } = UserStore();
   const router = useRouter();
- 
+
   useEffect(() => {
-    if (!token && user === null) {
+    if (token === null) {
       router.push("/signIn");
-    }else{
-        router.push("/")
     }
-  }, [user, router]);
+  }, [router]);
 
   return <>{children}</>;
 };

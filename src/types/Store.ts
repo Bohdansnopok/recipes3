@@ -1,27 +1,22 @@
-export type AuthStoreProps = {
-    user: null | {  _id:number; username: string; email: string, profileImage:string| null;  }; // или другой тип, если у тебя есть интерфейс User
-    isAuthenticated: boolean;
-    error: null | string;
-    isLoading: boolean;
-    isVerified: boolean;
-    recipes: Recipe[] | null;
-    _id: number;
-    title: string;
-    caption: string;
-    image: string | null;
-    rating: number;
-    token:string | null
-    createdAt: Date;
-    updatedAt: Date;
-    // checkCookies: () => void;
-    checkAuth: () => void;
-    // signUp: (data: SignUpProps) => Promise<void>;
-    signUp: (username: string, email: string, password: string) => Promise<{ success: boolean }>;
+export type AuthStore = {
+  user: User | null;
+  token: string | null;
+  isLoading: boolean;
+  recipes: Recipe[] | null;
+  signUp: (data: { username: string; email: string; password: string }) => Promise<{ success: boolean }>;
+  signIn: (data: SignInProps) => Promise<{ success: boolean }>;
+  getRecipes: () => Promise<Recipe[]>;
+  getRecipesByCurrentuser: () => Promise<Recipe[]>;
+  logout: () => Promise<void>
+};
 
-    signIn:(data:SignInProps) => Promise<void>;
-    getRecipes: () => Promise<Recipe[]>;
-  };
-  
+export type User = {
+  username: string;
+  email: string;
+  profileImage?: string;
+  createdAt?: string;
+  _id?: string;
+};
 
 export type SignUpProps={
     username: string;
@@ -29,27 +24,29 @@ export type SignUpProps={
     password: string;
   }
   
-  export type SignInProps={
+  export type SignInProps = {
     email: string;
     password: string;
-    token: string;
   }
 
-  export type Recipes={
-    recipes: Recipe[] | null;
-  } 
-
   export type Recipe = {
-    _id: number;
+    _id: string;
     title: string;
     caption: string;
     image: string;
     rating: number;
-    user:{
-      _id:number;
-      username:string;
-      profileImage:string
-    }
-    createdAt: Date;
-    updatedAt: Date;
+    user: {
+      _id: string;
+      username: string;
+      profileImage: string;
+    };
+    createdAt: string;
+    updatedAt: string;
   };
+
+export type RecipesResponse = {
+  recipes: Recipe[];
+  totalPages: number;
+  totalRecipes: number;
+  currentPage: number;
+};
