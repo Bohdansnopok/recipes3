@@ -52,7 +52,7 @@ export default function Profile() {
     
             if (response.status === 200) {
                 toast.success("Recipe deleted successfully!");
-                setRecipes((prevRecipes) => prevRecipes.filter(recipe => recipe.id !== id));
+                // setRecipes((prevRecipes) => prevRecipes.filter(recipe => recipe.id !== id));
             }
         } catch (error) {
             toast.error("Error deleting recipe");
