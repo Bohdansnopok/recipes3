@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import { QueryProvider } from "@/provider/QueryProvider";
 import ClientToast from "@/components/ClientToast";
+import CheckAuth from "@/components/CheckAuth";
 // import CheckAuth from "@/components/CheckAuth";
 
 const geistSans = Geist({
@@ -39,10 +40,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${geistAndadaPro.variable} antialiased`}
       >
         <QueryProvider>
-          <ClientToast/>
+          <ClientToast />
+          <CheckAuth>
             <Header />
             {children}
-         
+          </CheckAuth>
         </QueryProvider>
       </body>
     </html>

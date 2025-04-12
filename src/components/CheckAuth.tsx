@@ -1,31 +1,23 @@
-// "use client"
+"use client"
 
-// import { useState, useEffect } from "react";
-// import { useAuthStore } from "@/store/AuthStore";
-// import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useAuthStore } from "@/store/AuthStore";
+import { useRouter } from "next/navigation";
 
-// const CheckAuth = ({ children }: { children: React.ReactNode }) => {
-//   const {  user } = useAuthStore();
-//   const router = useRouter();
-//   // const [initialized, setInitialized] = useState(false);
+const CheckAuth = ({ children }: { children: React.ReactNode }) => {
+  const { token, user } = useAuthStore();
+  const router = useRouter();
+ 
+  useEffect(() => {
+    if (!token && user === null) {
+      router.push("/signIn");
+    }else{
+        router.push("/")
+    }
+  }, [user, router]);
 
-//   // useEffect(() => {
-//   //   checkCookies();
-//   //   setInitialized(true);
-//   // }, [checkCookies]);
+  return <>{children}</>;
+};
 
-//   useEffect(() => {
-//     // После инициализации, если пользователь так и не найден, редирект на страницу входа
-//     if (initialized && user === null && !user===null) {
-//       router.push("/signIn");
-//     }
-//   }, [initialized, user, router]);
-
-//   // Можно отобразить спиннер или ничего не рендерить, пока не завершена проверка
-//   if (!initialized) return null;
-
-//   return <>{children}</>;
-// };
-
-// export default CheckAuth;
+export default CheckAuth;
 

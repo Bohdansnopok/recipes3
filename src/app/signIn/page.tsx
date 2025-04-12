@@ -4,30 +4,26 @@ import povar from "../../../public/povar.png"
 import mailIcon from "../../../public/mailIcon.svg"
 import passwordLock from "../../../public/lockPasswordIcon.svg"
 import viewOff from "../../../public/viewOffSlash.svg"
-// import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from "next/navigation";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-
-type SignInProps = {
-    email: string;
-    password: string
-}
+import { useAuthStore } from "@/store/AuthStore";
+import { loginSchema, LoginSchemaType } from "@/zodSchems/loginSchem";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 
 export default function SingIn() {
-    const {signIn} = useAuthStore();
+    const { signIn } = useAuthStore();
     const router = useRouter();
-    const {register, reset, control, formState: { errors }, handleSubmit } = useForm<LoginSchemaType>({
+    const { register, formState: { errors }, handleSubmit } = useForm<LoginSchemaType>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
             variant: 'signIn',
             email: '',
-            password: ''
-          },
+            password: '',
+        },
     });
-
 
     const queryClient = useQueryClient();
 
@@ -35,49 +31,38 @@ export default function SingIn() {
         mutationFn: signIn,
         onSuccess: () => {
             alert(`Logged in successfully`);
-            
+            router.push("/");
             queryClient.invalidateQueries({ queryKey: ['singIn'] });
         },
         onError: (error: Error) => {
             alert(error.message);
-            // Handle error (show error message to the user)
         },
     })
 
-    const SignIn: SubmitHandler<LoginSchemaType> = async (data: { email: string; password: string }) => {
-        try {
-            const res = await signIn(data);
-        
-            if (res.success) {
-              toast.success("Успішний вхід!");
-              router.push("/");
-            } else {
-              toast.error("Щось пішло не так.");
-            }
-        
-          } catch (e) {
-            toast.error(e instanceof Error ? e.message : String(e));
-          }
+    const handleSignIn: SubmitHandler<LoginSchemaType> = async (data: { email: string; password: string }) => {
+        mutation.mutate(data)
     }
 
     return (
         <section className="flex items-center justify-between gap-[150px] container ">
-            <form className="w-[540px]" onSubmit={handleSubmit(SignIn)}>
+            <form className="w-[540px]" onSubmit={handleSubmit(handleSignIn)}>
                 <h1 className="text-[#424242] mb-16 text-center">Welcome Back!!</h1>
                 <div className="flex flex-col gap-12">
                     <div className="relative">
-                        <label htmlFor="email" className="absolute text-[20px] text-[#757575] font-semibold bg-white left-[56px] bottom-[58px] px-4">Email</label>
+                        <label htmlFor="email" className="absolute text-[20px] text-[#757575] font-semibold bg-white left-[56px] top-[-13px] px-4">Email</label>
                         <Image src={mailIcon} alt="" className="absolute block top-5 left-[30px]" />
                         <input
                             type="email"
                             placeholder="email@gmail.com"
                             className="rounded-[64px] border border-[#757575] py-5 px-[76px] block w-full placeholder:text-[22px] placeholder:text-[#616161] text-[22px]"
                             {...register("email", { required: true })}
+                            defaultValue=""
                         />
+                        {errors.email && <p className="text-red-500 my-5">{errors.email.message}</p>}
                     </div>
 
                     <div className="relative">
-                        <label htmlFor="password" className="absolute text-[20px] text-[#757575] font-semibold bg-white left-[56px] bottom-[85px] px-4">Password</label>
+                        <label htmlFor="password" className="absolute text-[20px] text-[#757575] font-semibold bg-white left-[56px] top-[-13px] px-4">Password</label>
                         <Image src={passwordLock} alt="" className="absolute block top-5 left-[30px]" />
                         <input
                             type="password"
@@ -85,8 +70,9 @@ export default function SingIn() {
                             className="rounded-[64px] border border-[#757575] py-5 px-[76px] block
                             w-full placeholder:text-[22px] placeholder:text-[#616161] text-[22px]"
                             {...register("password", { required: true })}
+                            defaultValue=""
                         />
-                        {/* <button type="button" onClick={ShowPassword}> */}
+                        {errors.password && <p className="text-red-500 my-5">{errors.password.message}</p>}
                         <button type="button">
                             <Image src={viewOff} alt="" className="absolute block top-6 right-[30px]" />
                         </button>
