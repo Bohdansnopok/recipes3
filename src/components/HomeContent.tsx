@@ -5,6 +5,8 @@ import star from "../../public/Star.svg"
 import { useQuery } from "@tanstack/react-query";
 import { UserStore, Recipe } from "@/store/UserStore";
 import starNotFilled from "../../public/starNotFilled.svg"
+import { RecipeDetails } from "./RecipeDetail";
+import { useState } from "react";
 
 export default function HomeContent() {
     const { getRecipes } = UserStore();
@@ -12,6 +14,16 @@ export default function HomeContent() {
         queryKey: ['recipes'],
         queryFn: getRecipes
     });
+
+    const [selectedRecipe, setSelectedRecipe] = useState(null);
+
+    const openModal = (recipe: any) => {
+        setSelectedRecipe(recipe);
+    };
+
+    const closeModal = () => {
+        setSelectedRecipe(null);
+    };
 
     if (isPending) {
         return <span>Loading...</span>;
@@ -25,7 +37,7 @@ export default function HomeContent() {
         <>
             {recipes?.length > 0 ? (
                 recipes?.map((recipe: Recipe) => (
-                    <div key={recipe?._id} className="bg-white py-[10px] px-[22px] mb-6">
+                    <div key={recipe?._id} className="bg-white py-[10px] px-[22px] mb-6" onClick={() => openModal(recipe)}>
                         <div className="flex items-center justify-between w-full mb-[20px]">
                             <div className="flex items-center gap-3">
                                 <Image
@@ -58,6 +70,29 @@ export default function HomeContent() {
                 ))
             ) : (
                 <p>No data available</p>
+            )}
+
+
+            {selectedRecipe && (
+                <RecipeDetails>
+                    <button
+                        onClick={closeModal}
+                        className='absolute top-3 right-4 bg-transparent border-none text-[1.75rem] cursor-pointer text-[#666666]'
+                    >
+                        &times;
+                    </button>
+                    <Image src={selectedRecipe.image} alt="recipe" width={500} height={200} className="w-full" />
+                    <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center">
+                            <h2 className="text-[27px] font-bold mt-4">{selectedRecipe.title}</h2>
+                        </div>
+                        <div className="mt-4">
+                            <div>{selectedRecipe.createdAt}</div>
+                            <div className="text-yellow-700 font-bold text-[20px]">rating: {selectedRecipe.rating}</div>
+                        </div>
+                    </div>
+                    <p className="mt-[18px]">{selectedRecipe.caption}</p>
+                </RecipeDetails>
             )}
         </>
     )
