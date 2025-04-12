@@ -7,7 +7,7 @@ export default function Header() {
         <header className="mb-20">
             <div className="container flex items-center justify-between text-[25px] ">
                 <div className="flex items-center gap-4">
-                    <Image src={logo} alt="" />
+                    <Image src={logo} alt="Header-logo" />
                     <div className="font-bold">Full Stack Receipt</div>
                 </div>
                 <div className="flex items-center gap-30">

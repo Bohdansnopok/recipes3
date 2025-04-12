@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 :root {
-  /* --background: #ffffff; */
   --foreground: #171717;
   --font-family: var(--font-geist-andada-pro);
   --activeColor: #92613a;
@@ -90,14 +89,6 @@ h2 {
   align-self: center;
 }
 
-/* .starInput:not(:checked) > .starLabel:hover,
-.starInput:not(:checked) > .starLabel:hover, ~ label {
-  background-color: lightgreen !important;
-} */
 
-.starInput:checked + label:hover,
-.starLabel:hover ~ input:checked ~ label,
-.starInput:checked ~ label:hover ~ label {
-  background-color: lightgreen !important;
-  cursor: pointer;
-}
+
+
