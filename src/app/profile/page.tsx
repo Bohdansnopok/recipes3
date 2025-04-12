@@ -56,6 +56,7 @@ export default function Profile() {
                 setTimeout(() => {
                     window.location.reload();
                 }, 10000); 
+                console.log('test console')
             }
             
         } catch (error) {
