@@ -1,21 +1,21 @@
-"use client"
-
-import { useEffect } from "react";
-import { UserStore } from "@/store/UserStore";
-import { useRouter } from "next/navigation";
+'use client'
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 const CheckAuth = ({ children }: { children: React.ReactNode }) => {
-  const { token } = UserStore();
-  const router = useRouter();
+  const router = useRouter()
 
   useEffect(() => {
-    if (token === null) {
-      router.push("/signIn");
+    const token = localStorage.getItem('token')
+
+    if (!token) {
+      router.push('/login')
+    } else {
+      router.push('/') 
     }
-  }, [router]);
+  }, [router])
 
-  return <>{children}</>;
-};
+  return <>{children}</>  
+}
 
-export default CheckAuth;
-
+export default CheckAuth
