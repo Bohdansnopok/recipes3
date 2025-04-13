@@ -140,7 +140,7 @@ export const UserStore = create<AuthStore>((set) => {
       }
     },
 
-    handleDelete: async (id: string): Promise<DeleteResponse> => {
+    handleDelete: async (id: string):Promise<DeleteResponse> => {
       const token = localStorage.getItem("token");
       if (!token) {
         toast.error("No token found! You need to be logged in.");
@@ -159,6 +159,7 @@ export const UserStore = create<AuthStore>((set) => {
             window.location.reload();
         }, 10000); 
         }
+        
       } catch (error) {
         toast.error("Error deleting recipe");
         console.error("Delete error:", error);
